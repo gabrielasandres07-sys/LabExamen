@@ -8,13 +8,20 @@ package labexamen;
  *
  * @author USER
  */
+
+
+import gui.VentanaPrincipal;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
 public class LabExamen {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        // TODO code application logic here
+        UIManager.put("OptionPane.yesButtonText", "Sí");
+        UIManager.put("OptionPane.noButtonText", "No");
+        UIManager.put("OptionPane.okButtonText", "Aceptar");
+        UIManager.put("OptionPane.cancelButtonText", "Cancelar");
+
+        SwingUtilities.invokeLater(() -> new VentanaPrincipal().setVisible(true));
     }
-    
 }
