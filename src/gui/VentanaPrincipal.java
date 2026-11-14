@@ -10,6 +10,7 @@ package gui;
  */
 
 
+import logica.Batalla;
 import modelo.Catalogo;
 import modelo.Entrenador;
 import modelo.GestorMemoria;
@@ -34,16 +35,20 @@ public class VentanaPrincipal extends JFrame {
     private Entrenador entrenador;
 
     private final PanelEquipo panelEquipo;
+    private final PanelBatalla panelBatalla;
+    private final PanelResultado panelResultado;
 
     public VentanaPrincipal() {
         super("Batallas Pokémon");
 
         panelEquipo = new PanelEquipo(this);
+        panelBatalla = new PanelBatalla(this);
+        panelResultado = new PanelResultado(this);
 
         contenedor.add(new PanelInicio(this), INICIO);
         contenedor.add(panelEquipo, EQUIPO);
-        contenedor.add(crearTemporal("Pantalla de BATALLA"), BATALLA);
-        contenedor.add(crearTemporal("Pantalla de RESULTADO"), RESULTADO);
+        contenedor.add(panelBatalla, BATALLA);
+        contenedor.add(panelResultado, RESULTADO);
 
         add(contenedor);
 
@@ -69,7 +74,14 @@ public class VentanaPrincipal extends JFrame {
     }
 
     public void comenzarBatalla() {
+        Batalla batalla = new Batalla(entrenador.getEquipo());
+        panelBatalla.iniciar(entrenador, batalla);
         mostrar(BATALLA);
+    }
+
+    public void mostrarResultado(Batalla batalla) {
+        panelResultado.mostrar(entrenador, batalla);
+        mostrar(RESULTADO);
     }
 
     public void salir() {
@@ -96,17 +108,5 @@ public class VentanaPrincipal extends JFrame {
 
     public GestorMemoria getMemoria() {
         return memoria;
-    }
-
-    private JPanel crearTemporal(String texto) {
-        JPanel p = new JPanel(new BorderLayout());
-        JLabel lbl = new JLabel(texto, SwingConstants.CENTER);
-        lbl.setFont(new Font("SansSerif", Font.BOLD, 24));
-        p.add(lbl, BorderLayout.CENTER);
-
-        JButton volver = new JButton("← Volver al equipo");
-        volver.addActionListener(e -> mostrar(EQUIPO));
-        p.add(volver, BorderLayout.SOUTH);
-        return p;
     }
 }
