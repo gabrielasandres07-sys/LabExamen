@@ -10,7 +10,10 @@ package gui;
  */
 
 
+import modelo.Catalogo;
 import modelo.Entrenador;
+import modelo.GestorMemoria;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -26,13 +29,19 @@ public class VentanaPrincipal extends JFrame {
     private final CardLayout cards = new CardLayout();
     private final JPanel contenedor = new JPanel(cards);
 
+    private final Catalogo catalogo = new Catalogo();
+    private final GestorMemoria memoria = new GestorMemoria();
     private Entrenador entrenador;
+
+    private final PanelEquipo panelEquipo;
 
     public VentanaPrincipal() {
         super("Batallas Pokémon");
 
+        panelEquipo = new PanelEquipo(this);
+
         contenedor.add(new PanelInicio(this), INICIO);
-        contenedor.add(crearTemporal("Pantalla de EQUIPO"), EQUIPO);
+        contenedor.add(panelEquipo, EQUIPO);
         contenedor.add(crearTemporal("Pantalla de BATALLA"), BATALLA);
         contenedor.add(crearTemporal("Pantalla de RESULTADO"), RESULTADO);
 
@@ -46,14 +55,21 @@ public class VentanaPrincipal extends JFrame {
             }
         });
 
-        setSize(900, 600);
-        setMinimumSize(new Dimension(800, 550));
+        setSize(1000, 680);
+        setMinimumSize(new Dimension(900, 620));
         setLocationRelativeTo(null);
         mostrar(INICIO);
     }
 
     public void mostrar(String pantalla) {
+        if (EQUIPO.equals(pantalla)) {
+            panelEquipo.actualizar();
+        }
         cards.show(contenedor, pantalla);
+    }
+
+    public void comenzarBatalla() {
+        mostrar(BATALLA);
     }
 
     public void salir() {
@@ -74,17 +90,23 @@ public class VentanaPrincipal extends JFrame {
         this.entrenador = entrenador;
     }
 
+    public Catalogo getCatalogo() {
+        return catalogo;
+    }
+
+    public GestorMemoria getMemoria() {
+        return memoria;
+    }
+
     private JPanel crearTemporal(String texto) {
         JPanel p = new JPanel(new BorderLayout());
         JLabel lbl = new JLabel(texto, SwingConstants.CENTER);
         lbl.setFont(new Font("SansSerif", Font.BOLD, 24));
         p.add(lbl, BorderLayout.CENTER);
 
-        JButton siguiente = new JButton("Siguiente pantalla →");
-        siguiente.addActionListener(e -> cards.next(contenedor));
-        p.add(siguiente, BorderLayout.SOUTH);
+        JButton volver = new JButton("← Volver al equipo");
+        volver.addActionListener(e -> mostrar(EQUIPO));
+        p.add(volver, BorderLayout.SOUTH);
         return p;
     }
-
-
 }
