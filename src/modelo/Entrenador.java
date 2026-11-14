@@ -11,7 +11,6 @@ package modelo;
 
 import java.io.Serializable;
 
-
 public class Entrenador implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -20,17 +19,17 @@ public class Entrenador implements Serializable {
     public static final int MAX_CARACTERES = 10;
 
     private final String nombre;
-   
+    private Equipo equipo;
+
     public Entrenador(String nombre) {
         String error = validarNombre(nombre);
         if (error != null) {
             throw new IllegalArgumentException(error);
         }
         this.nombre = nombre.trim();
-        
+        this.equipo = new Equipo();
     }
 
-  
     public static String validarNombre(String nombre) {
         if (nombre == null || nombre.trim().isEmpty()) {
             return "El nombre no puede estar vacío ni tener solo espacios.";
@@ -38,18 +37,27 @@ public class Entrenador implements Serializable {
         String limpio = nombre.trim();
 
         if (limpio.length() < MIN_CARACTERES || limpio.length() > MAX_CARACTERES) {
-            return "El nombre debe tener entre " + MIN_CARACTERES + " y "  + MAX_CARACTERES + " caracteres (tiene " + limpio.length() + ").";
-        }       
+            return "El nombre debe tener entre " + MIN_CARACTERES + " y " + MAX_CARACTERES
+                    + " caracteres (tiene " + limpio.length() + ").";
+        }
         if (!limpio.matches("[\\p{L}\\d ]+")) {
             return "El nombre solo puede contener letras, números y espacios.";
         }
-
         return null;
     }
 
     public String getNombre() {
         return nombre;
     }
+
+    public Equipo getEquipo() {
+        return equipo;
+    }
+
+    public void setEquipo(Equipo equipo) {
+        this.equipo = equipo;
+    }
+
     @Override
     public String toString() {
         return nombre;
