@@ -20,7 +20,6 @@ public class HabilidadEspecial implements Movimiento{
             return;
         }
         atacante.usarHabilidadEspecial(defensor);
-        atacante.reducirUsosHabilidad();
     }
     @Override
     public String getNombre(){
