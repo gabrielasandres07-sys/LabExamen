@@ -11,7 +11,7 @@ package logica;
  */
 import modelo.Pokemon;
 public class AtaqueBasico implements Movimiento{
-    private final int POTENCIA=19;
+    private final int POTENCIA=10;
     
     @Override
     public void ejecutar(Pokemon atacante,Pokemon defensor){
